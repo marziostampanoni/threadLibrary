@@ -1,3 +1,0 @@
-/Users/adriatikdushica/Desktop/threadLibrary/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/adriatikdushica/Desktop/threadLibrary/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/adriatikdushica/Desktop/threadLibrary/cmake-build-debug/CMakeFiles/threadLibrary.dir
