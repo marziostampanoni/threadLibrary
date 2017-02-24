@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/n0skill/CLionProjects/threadLibrary/main.c" "/Users/n0skill/CLionProjects/threadLibrary/cmake-build-debug/CMakeFiles/threadLibrary.dir/main.c.o"
+  "/Users/adriatikdushica/Desktop/threadLibrary/main.c" "/Users/adriatikdushica/Desktop/threadLibrary/cmake-build-debug/CMakeFiles/threadLibrary.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 

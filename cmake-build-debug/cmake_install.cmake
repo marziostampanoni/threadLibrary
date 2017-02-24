@@ -1,4 +1,4 @@
-# Install script for directory: /Users/n0skill/CLionProjects/threadLibrary
+# Install script for directory: /Users/adriatikdushica/Desktop/threadLibrary
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/n0skill/CLionProjects/threadLibrary/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/adriatikdushica/Desktop/threadLibrary/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
