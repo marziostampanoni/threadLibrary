@@ -10,7 +10,6 @@ int main() {
 
     TQueue first = malloc(sizeof(TQueue));
     TQueue second = malloc(sizeof(TQueue));
-
     first->next = second;
     second->next = first;
     printf("The size of the given queue is %lu\n", tqueue_size(first));
