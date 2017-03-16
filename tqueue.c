@@ -31,6 +31,33 @@ unsigned long int tqueue_enqueue(TQueue* q, void* data){
 
     return position;
 }
+
+/* Removes and returns the element at the beginning of the list, NULL if the
+queue is empty */
+void* tqueue_pop(TQueue* q){
+    unsigned long size = tqueue_size((*q));
+    if(size == 0)
+        return NULL;
+    else{
+        TQueue temp = *q;
+        temp->next = NULL;
+
+        if(size == 1){
+            *q = NULL;
+        }else {
+            TQueueNode *prev = *q;
+
+            while (prev->next != *q) {
+                prev = prev->next;
+            }
+
+            prev->next = (*q)->next;
+            *q = (*q)->next;
+        }
+        return temp;
+    }
+}
+
 unsigned long int tqueue_size(TQueue q){
 
     TQueue initial = q;
