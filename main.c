@@ -14,6 +14,9 @@ int main() {
     second->next = first;
     printf("The size of the given queue is %lu\n", tqueue_size(first));
 
+    int test = 5;
+    tqueue_enqueue(&first,&test);
+
     TQueue *queue = &first;
     printf("%p", tqueue_pop(queue));
 

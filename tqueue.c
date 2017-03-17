@@ -21,13 +21,13 @@ unsigned long int tqueue_enqueue(TQueue* q, void* data){
 
 
     while((*q)->next != *qStart){
-        *q = (*q)->next;
+        q = &((*q)->next);
         position++;
     }
     (*q)->next = (TQueueNode*)malloc(sizeof(TQueueNode*));
     (*q)->next->data = data;
     (*q)->next->next = *qStart;
-
+    position++;
 
     return position;
 }
