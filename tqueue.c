@@ -44,7 +44,6 @@ void* tqueue_pop(TQueue* q){
         return NULL;
     else{
         TQueue temp = *q;
-        temp->next = NULL;
 
         if(size == 1){
             *q = NULL;
@@ -58,6 +57,7 @@ void* tqueue_pop(TQueue* q){
             prev->next = (*q)->next;
             *q = (*q)->next;
         }
+        temp->next = NULL;
         return temp;
     }
 }
