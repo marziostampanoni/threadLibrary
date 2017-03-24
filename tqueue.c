@@ -32,6 +32,10 @@ unsigned long int tqueue_enqueue(TQueue* q, void* data){
     return position;
 }
 
+void* tqueue_get_data(TQueue q){
+    return q->data;
+}
+
 /* Removes and returns the element at the beginning of the list, NULL if the
 queue is empty */
 void* tqueue_pop(TQueue* q){
@@ -79,3 +83,4 @@ TQueue tqueue_at_offset(TQueue q, unsigned long int offset) {
 
     return result;
 }
+
