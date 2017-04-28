@@ -36,8 +36,10 @@ void* tqueue_get_data(TQueue q){
     return q->data;
 }
 
-/* Removes and returns the element at the beginning of the list, NULL if the
-queue is empty */
+/*
+ * Removes and returns the element at the beginning of the list,
+ * NULL if the queue is empty
+ */
 void* tqueue_pop(TQueue* q){
     unsigned long size = tqueue_size((*q));
     if(size == 0)

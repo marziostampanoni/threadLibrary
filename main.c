@@ -24,16 +24,20 @@ int main() {
     assert(tqueue_size(first)==3);
 
     TQueue *queue = &first;
-    printf("%p", tqueue_pop(queue));
+    assert(*queue == first);
 
-    TQueueNode *temp = first;
+    printf("%p\n", tqueue_pop(queue));
+    assert(*queue == second);
+
+    TQueueNode *temp = tqueue_pop(queue);
 
     printf("The size of the given queue is %lu\n", tqueue_size(*queue));
 
-    printf("%p = %p\n", first, second);
-    assert(temp == first);
-    assert(tqueue_size(temp) == 1);
-    assert(*queue == second);
+    printf("%p = %p = %p \n", first, second, temp);
+    assert(temp == second);
+    assert(tqueue_size(*queue) == 1);
+    tqueue_pop(queue);
+    assert(*queue == NULL);
 
     return 0;
 }
