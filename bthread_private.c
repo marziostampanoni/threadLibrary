@@ -9,6 +9,7 @@ __bthread_scheduler_private* bthread_get_scheduler() {
     static __bthread_scheduler_private* scheduler_private = NULL;
     if(!scheduler_private){
         scheduler_private = (__bthread_scheduler_private*) malloc(sizeof(__bthread_scheduler_private));
+        scheduler_private -> queue = (TQueue) malloc(sizeof(TQueue));
     }
     return scheduler_private;
 }
