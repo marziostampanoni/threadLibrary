@@ -5,6 +5,7 @@
 #define THREADLIBRARY_BTHREAD_PRIVATE_H_H
 
 #include <setjmp.h>
+#include <opencl-c.h>
 #include "tqueue.h"
 
 typedef unsigned long int bthread_t;
@@ -36,5 +37,9 @@ typedef struct {
     TQueue current_item;
     jmp_buf context;
 } __bthread_scheduler_private;
+
+__bthread_scheduler_private* bthread_get_scheduler();
+
+
 
 #endif //THREADLIBRARY_BTHREAD_PRIVATE_H_H
