@@ -10,12 +10,6 @@
 typedef unsigned long int bthread_t;
 
 typedef struct {
-    TQueue queue;
-    TQueue current_item;
-    jmp_buf  context;
-} __bthread_scheduler_private;
-
-typedef struct {
 
 } bthread_attr_t;
 
