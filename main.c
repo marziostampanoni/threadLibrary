@@ -32,7 +32,7 @@ int main() {
 
     printf("%p = %p\n", first, second);
     assert(temp == first);
-    assert(tqueue_size(temp) == 1);
+    assert(tqueue_size(temp) == 2);
     assert(*queue == second);
 
     return 0;
