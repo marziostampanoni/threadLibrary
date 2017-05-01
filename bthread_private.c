@@ -13,3 +13,10 @@ __bthread_scheduler_private* bthread_get_scheduler() {
     }
     return scheduler_private;
 }
+
+void bthread_cleanup(){
+    __bthread_scheduler_private* scheduler =  bthread_get_scheduler();
+
+
+    free(scheduler);
+}

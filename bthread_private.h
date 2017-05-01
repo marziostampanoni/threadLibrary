@@ -45,6 +45,15 @@ typedef struct {
 
 __bthread_scheduler_private* bthread_get_scheduler();
 
+static void bthread_cleanup();
+static void bthread_create_cushion(__bthread_private* t_data);
+static void bthread_initialize_next();
+static int bthread_reap_if_zombie(bthread_t bthread, void ** retval);
+
+#define save_context(CONTEXT) sigsetjmp(CONTEXT, 1)
+#define restore_context(CONTEXT) siglongjmp(CONTEXT, 1);
+
+
 
 
 #endif //THREADLIBRARY_BTHREAD_PRIVATE_H_H
