@@ -13,9 +13,6 @@ typedef struct TQueueNode {
     void* data;
 }TQueueNode;
 
-
-
-
 struct TQueueNode;
 typedef struct TQueueNode* TQueue;
 

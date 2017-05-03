@@ -16,7 +16,11 @@ __bthread_scheduler_private* bthread_get_scheduler() {
 
 void bthread_cleanup(){
     __bthread_scheduler_private* scheduler =  bthread_get_scheduler();
-
-
+    TQueue* queue = &(scheduler->queue);
+    TQueueNode* tmp = NULL;
+    while(NULL != (tmp = tqueue_pop(queue))){
+        free(tmp->data);
+        free(tmp);
+    }
     free(scheduler);
 }
