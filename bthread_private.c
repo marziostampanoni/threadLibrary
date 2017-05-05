@@ -24,3 +24,16 @@ void bthread_cleanup(){
     }
     free(scheduler);
 }
+
+int bthread_reap_if_zombie(bthread_t bthread,  void ** retval){
+    __bthread_scheduler_private* sched = bthread_get_scheduler();
+    __bthread_private* thread = tqueue_get_data(tqueue_at_offset(sched->queue, bthread));
+
+    if(thread->state != __BTHREAD_ZOMBIE) {
+        return 0;
+    }else{
+        if(thread->retval != NULL)
+            *retval = thread->retval;
+        return 1;
+    }
+}
