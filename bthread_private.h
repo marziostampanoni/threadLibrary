@@ -37,11 +37,7 @@ typedef struct {
 }__bthread_private;
 
 
-typedef struct {
-    TQueue queue;
-    TQueue current_item;
-    jmp_buf context;
-} __bthread_scheduler_private;
+
 
 __bthread_scheduler_private* bthread_get_scheduler();
 
