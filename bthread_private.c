@@ -31,6 +31,7 @@ void bthread_create_cushion(__bthread_private* t_data){
     cushion[CUSHION_SIZE-1] = cushion[0];
     t_data->state = __BTHREAD_READY;
     bthread_exit(t_data->arg);
+
 }
 
 int bthread_reap_if_zombie(bthread_t bthread,  void ** retval){
