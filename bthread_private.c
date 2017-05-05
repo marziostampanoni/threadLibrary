@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include "bthread_private.h"
+#include "bthread.h"
 
 __bthread_scheduler_private* bthread_get_scheduler() {
     static __bthread_scheduler_private* scheduler_private = NULL;
@@ -23,4 +24,11 @@ void bthread_cleanup(){
         free(tmp);
     }
     free(scheduler);
+}
+
+void bthread_create_cushion(__bthread_private* t_data){
+    char cushion[CUSHION_SIZE];
+    cushion[CUSHION_SIZE-1] = cushion[0];
+    t_data->state = __BTHREAD_READY;
+    bthread_exit(t_data->arg);
 }
