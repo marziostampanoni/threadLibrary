@@ -49,9 +49,12 @@ void bthread_yield(){
     __bthread_scheduler_private* scheduler = bthread_get_scheduler();
     __bthread_private* current_item = tqueue_get_data(scheduler->current_item);
 
-    sigsetjmp(current_item->context,0); //salvo lo stato
 
-    bthread_initialize_next(); //si occupa lui di passare il testimone allo scheduler e di controllare se fare il cuscino
+    if (save_context(current_item->context) == 0) { //salvo lo stato
+
+        bthread_initialize_next(); //si occupa lui di passare il testimone allo scheduler e di controllare se fare il cuscino
+        restore_context(scheduler->context);
+    }
 
 }
 

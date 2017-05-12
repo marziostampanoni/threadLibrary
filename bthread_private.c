@@ -30,7 +30,7 @@ void bthread_create_cushion(__bthread_private* t_data){
     char cushion[CUSHION_SIZE];
     cushion[CUSHION_SIZE-1] = cushion[0];
     t_data->state = __BTHREAD_READY;
-    bthread_exit(t_data->arg);
+    bthread_exit(t_data->body(t_data->arg));
 
 }
 
@@ -56,12 +56,9 @@ static void bthread_initialize_next(){
 
 
     if(nextThread->state == __BTHREAD_UNINITIALIZED){
+        scheduler_private->current_item = scheduler_private->current_item->next;
         bthread_create_cushion(nextThread);
     }
-    else{
-        siglongjmp(scheduler_private->context,0); //salto allo scheduler che poi decide cosa eseguire
-    }
 
-    scheduler_private->current_item = scheduler_private->current_item->next;
 
 }
