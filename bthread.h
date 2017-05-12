@@ -20,6 +20,9 @@ void bthread_exit(void *retval);
 
 int bthread_join(bthread_t bthread, void **retval);
 
+void bthread_sleep(double ms);
+
+double get_current_time_millis();
 
 static void bthread_initialize_next();
 #define save_context(CONTEXT) sigsetjmp(CONTEXT, 1)

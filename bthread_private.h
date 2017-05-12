@@ -37,6 +37,7 @@ typedef struct {
     bthread_attr_t attr;
     jmp_buf context;
     void *retval;
+    double wake_up_time;
 }__bthread_private;
 
 

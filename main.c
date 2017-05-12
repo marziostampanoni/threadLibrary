@@ -19,8 +19,6 @@ int main() {
     int test = 5;
     tqueue_enqueue(&first,&test);
 
-
-
     assert(tqueue_size(first)==3);
 
     TQueue *queue = &first;
