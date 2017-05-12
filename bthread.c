@@ -42,7 +42,13 @@ int bthread_join(bthread_t bthread, void **retval){
 
 
 void bthread_exit(void *retval){
-    //TODO: chiama la funzione e ne gestisce la terminazione
+    __bthread_scheduler_private* scheduler = bthread_get_scheduler();
+    __bthread_private* current_item = tqueue_get_data(scheduler->current_item);
+
+    current_item->retval = retval;
+    current_item->state = __BTHREAD_ZOMBIE;
+    restore_context(scheduler->context);
+
 }
 
 void bthread_yield(){
