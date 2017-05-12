@@ -34,6 +34,8 @@ void bthread_create_cushion(__bthread_private* t_data){
 
 }
 
+
+
 int bthread_reap_if_zombie(bthread_t bthread,  void ** retval){
     __bthread_scheduler_private* sched = bthread_get_scheduler();
     __bthread_private* thread = tqueue_get_data(tqueue_at_offset(sched->queue, bthread));
@@ -52,8 +54,14 @@ static void bthread_initialize_next(){
 
     __bthread_private* nextThread  = (__bthread_private*) tqueue_get_data(scheduler_private->queue->next);
 
+
     if(nextThread->state == __BTHREAD_UNINITIALIZED){
         bthread_create_cushion(nextThread);
     }
+    else{
+        siglongjmp(scheduler_private->context,0); //salto allo scheduler che poi decide cosa eseguire
+    }
+
+    scheduler_private->current_item = scheduler_private->current_item->next;
 
 }
