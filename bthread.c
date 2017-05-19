@@ -98,8 +98,10 @@ int bthread_cancel(bthread_t bthread){
 
         if(current_item->tid == bthread){
             current_item->cancel_req = 1;
+            return 0;
         }
     }
+    return 1;
 }
 
 void bthread_testcancel(){
