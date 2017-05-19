@@ -88,4 +88,20 @@ void bthread_yield() {
 
 }
 
+int bthread_cancel(bthread_t bthread){
+    __bthread_scheduler_private *scheduler = bthread_get_scheduler();
+    TQueue queue = scheduler->queue;
+    TQueueNode *current = queue->next;
 
+    while(current != NULL){
+        __bthread_private *current_item = tqueue_get_data(current);
+
+        if(current_item->tid == bthread){
+            current_item->cancel_req = 1;
+        }
+    }
+}
+
+void bthread_testcancel(void){
+
+}
