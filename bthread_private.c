@@ -3,62 +3,83 @@
 //
 
 #include <stdlib.h>
+#include <stdbool.h>
+#include <signal.h>
+#include <sys/time.h>
 #include "bthread_private.h"
 #include "bthread.h"
+#include <sys/time.h>
+#include "stdarg.h"
 
 
-
-__bthread_scheduler_private* bthread_get_scheduler() {
-    static __bthread_scheduler_private* scheduler_private = NULL;
-    if(!scheduler_private){
-        scheduler_private = (__bthread_scheduler_private*) malloc(sizeof(__bthread_scheduler_private));
-        scheduler_private -> queue = (TQueue) malloc(sizeof(TQueue));
+__bthread_scheduler_private *bthread_get_scheduler() {
+    static __bthread_scheduler_private *scheduler_private = NULL;
+    if (!scheduler_private) {
+        scheduler_private = (__bthread_scheduler_private *) malloc(sizeof(__bthread_scheduler_private));
+        scheduler_private->queue = (TQueue) malloc(sizeof(TQueue));
     }
     return scheduler_private;
 }
 
-void bthread_cleanup(){
-    __bthread_scheduler_private* scheduler =  bthread_get_scheduler();
-    TQueue* queue = &(scheduler->queue);
-    TQueueNode* tmp = NULL;
-    while(NULL != (tmp = tqueue_pop(queue))){
+void bthread_cleanup() {
+    __bthread_scheduler_private *scheduler = bthread_get_scheduler();
+    TQueue *queue = &(scheduler->queue);
+    TQueueNode *tmp = NULL;
+    while (NULL != (tmp = tqueue_pop(queue))) {
         free(tmp->data);
         free(tmp);
     }
     free(scheduler);
 }
 
-void bthread_create_cushion(__bthread_private* t_data){
+void bthread_create_cushion(__bthread_private *t_data) {
     char cushion[CUSHION_SIZE];
-    cushion[CUSHION_SIZE-1] = cushion[0];
+    cushion[CUSHION_SIZE - 1] = cushion[0];
     t_data->state = __BTHREAD_READY;
     bthread_exit(t_data->body(t_data->arg));
 
 }
 
-int bthread_reap_if_zombie(bthread_t bthread,  void ** retval){
-    __bthread_scheduler_private* sched = bthread_get_scheduler();
-    __bthread_private* thread = tqueue_get_data(tqueue_at_offset(sched->queue, bthread));
+int bthread_reap_if_zombie(bthread_t bthread, void **retval) {
+    __bthread_scheduler_private *sched = bthread_get_scheduler();
+    __bthread_private *thread = tqueue_get_data(tqueue_at_offset(sched->queue, bthread));
 
-    if(thread->state != __BTHREAD_ZOMBIE) {
+    if (thread->state != __BTHREAD_ZOMBIE) {
         return 0;
-    }else{
-        if(thread->retval != NULL)
+    } else {
+        if (thread->retval != NULL)
             *retval = thread->retval;
         return 1;
     }
 }
 
-static void bthread_initialize_next(){
-    __bthread_scheduler_private* scheduler_private = bthread_get_scheduler();
+static void bthread_initialize_next() {
+    __bthread_scheduler_private *scheduler_private = bthread_get_scheduler();
 
-    __bthread_private* nextThread  = (__bthread_private*) tqueue_get_data(scheduler_private->queue->next);
+    __bthread_private *nextThread = (__bthread_private *) tqueue_get_data(scheduler_private->queue->next);
 
 
-    if(nextThread->state == __BTHREAD_UNINITIALIZED){
+    if (nextThread->state == __BTHREAD_UNINITIALIZED) {
         scheduler_private->current_item = scheduler_private->current_item->next;
         bthread_create_cushion(nextThread);
     }
+}
 
 
+
+static void bthread_setup_timer() {
+
+    static bool initialized = false;
+
+    if (!initialized) {
+
+        signal(SIGVTALRM, (void (*)()) bthread_yield);
+        struct itimerval time;
+        time.it_interval.tv_sec = 0;
+        time.it_interval.tv_usec = QUANTUM_USEC;
+        time.it_value.tv_sec = 0;
+        time.it_value.tv_usec = QUANTUM_USEC;
+        initialized = true;
+        setitimer(ITIMER_VIRTUAL, &time, NULL);
+    }
 }

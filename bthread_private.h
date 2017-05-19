@@ -4,6 +4,8 @@
 #ifndef THREADLIBRARY_BTHREAD_PRIVATE_H_H
 #define THREADLIBRARY_BTHREAD_PRIVATE_H_H
 
+#define QUANTUM_USEC 10
+
 #define bthread_printf(...) \
     printf(__VA_ARGS__); \
     bthread_yield();
