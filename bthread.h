@@ -22,6 +22,11 @@ int bthread_join(bthread_t bthread, void **retval);
 
 void bthread_sleep(double ms);
 
+int bthread_cancel(bthread_t bthread);
+
+void bthread_testcancel(void);
+
+
 double get_current_time_millis();
 
 static void bthread_initialize_next();
