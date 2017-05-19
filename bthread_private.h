@@ -4,6 +4,10 @@
 #ifndef THREADLIBRARY_BTHREAD_PRIVATE_H_H
 #define THREADLIBRARY_BTHREAD_PRIVATE_H_H
 
+#define bthread_printf(...) \
+    printf(__VA_ARGS__); \
+    bthread_yield();
+
 #include <setjmp.h>
 #include "tqueue.h"
 

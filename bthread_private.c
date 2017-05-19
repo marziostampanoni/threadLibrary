@@ -6,9 +6,7 @@
 #include "bthread_private.h"
 #include "bthread.h"
 
-#define bthread_printf(...) \
-    printf(__VA_ARGS__); \
-    bthread_yield();
+
 
 __bthread_scheduler_private* bthread_get_scheduler() {
     static __bthread_scheduler_private* scheduler_private = NULL;
