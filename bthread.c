@@ -102,6 +102,14 @@ int bthread_cancel(bthread_t bthread){
     }
 }
 
-void bthread_testcancel(void){
+void bthread_testcancel(){
+    __bthread_scheduler_private *scheduler = bthread_get_scheduler();
+    __bthread_private *current_item = tqueue_get_data(scheduler->current_item);
 
+    int *ret_value;
+    ret_value = (int *)malloc(sizeof(int));
+    *ret_value = -1;
+
+    if(current_item->cancel_req == 1)
+        bthread_exit(ret_value);
 }
