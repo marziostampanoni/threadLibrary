@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "bthread.h";
 #include "bthread_private.h"
