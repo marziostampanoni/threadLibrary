@@ -1,10 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "tqueue.h"
+#include <unistd.h>
+#include "bthread.h"
+
+#define N 3
 
 
-int main() {
+void* run(void* value){
+    int* i;
+    i = (int*) value;
+    bthread_printf("Io ezzere thread %d, io dormire %d zecondi\n",*i, 2+1* *i);
+    bthread_sleep(2000 + 1000* *i);
+    bthread_printf("Thread %d ezzere terminato ja\n",*i);
+
+}
+
+int main(){
+
+    bthread_t threads[N];
+    int values[N];
+    for(int i=0;i<N;i++){
+        values[i] = i;
+        bthread_create(&threads[i],NULL,run,&values[i]);
+    }
+
+    for(int i=0;i<N;i++){
+        bthread_join(threads[i], NULL);
+    }
+
+}
+
+//OLD MAIN
+/* int main() {
     printf("Queue Test!\n");
 
 
@@ -38,4 +66,4 @@ int main() {
     assert(*queue == NULL);
 
     return 0;
-}
+}*/

@@ -16,7 +16,6 @@ __bthread_scheduler_private *bthread_get_scheduler() {
     static __bthread_scheduler_private *scheduler_private = NULL;
     if (!scheduler_private) {
         scheduler_private = (__bthread_scheduler_private *) malloc(sizeof(__bthread_scheduler_private));
-        scheduler_private->queue = (TQueue) malloc(sizeof(TQueue));
     }
     return scheduler_private;
 }
@@ -41,22 +40,23 @@ void bthread_create_cushion(__bthread_private *t_data) {
 }
 
 int bthread_reap_if_zombie(bthread_t bthread, void **retval) {
-    __bthread_scheduler_private *sched = bthread_get_scheduler();
-    __bthread_private *thread = tqueue_get_data(tqueue_at_offset(sched->queue, bthread));
+    __bthread_scheduler_private *scheduler = bthread_get_scheduler();
+    __bthread_private *thread = tqueue_get_data(scheduler->current_item);
 
     if (thread->state != __BTHREAD_ZOMBIE) {
         return 0;
     } else {
+        thread->state = __BTHREAD_EXITED;
         if (thread->retval != NULL)
             *retval = thread->retval;
         return 1;
     }
 }
 
-static void bthread_initialize_next() {
+void bthread_initialize_next() {
     __bthread_scheduler_private *scheduler_private = bthread_get_scheduler();
 
-    __bthread_private *nextThread = (__bthread_private *) tqueue_get_data(scheduler_private->queue->next);
+    __bthread_private *nextThread = tqueue_get_data(scheduler_private->current_item->next);
 
 
     if (nextThread->state == __BTHREAD_UNINITIALIZED) {
@@ -74,6 +74,7 @@ static void bthread_setup_timer() {
     if (!initialized) {
 
         signal(SIGVTALRM, (void (*)()) bthread_yield);
+        sigaddset(&sigsetNew, SIGALRM);
         struct itimerval time;
         time.it_interval.tv_sec = 0;
         time.it_interval.tv_usec = QUANTUM_USEC;
@@ -82,4 +83,11 @@ static void bthread_setup_timer() {
         initialized = true;
         setitimer(ITIMER_VIRTUAL, &time, NULL);
     }
+}
+
+void bthread_block_timer_signal(){
+    sigprocmask(SIG_BLOCK, &sigsetNew, NULL);
+}
+void bthread_unblock_timer_signal(){
+    sigprocmask(SIG_UNBLOCK, &sigsetNew, NULL);
 }

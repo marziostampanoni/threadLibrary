@@ -26,10 +26,10 @@ int bthread_cancel(bthread_t bthread);
 
 void bthread_testcancel(void);
 
-
 double get_current_time_millis();
 
-static void bthread_initialize_next();
+void bthread_printf(const char *format, ...);
+
 #define save_context(CONTEXT) sigsetjmp(CONTEXT, 1)
 #define restore_context(CONTEXT) siglongjmp(CONTEXT, 1)
 
