@@ -13,15 +13,13 @@ int bthread_create(bthread_t *bthread, const bthread_attr_t *attr,
 
     __bthread_private *thread = malloc(sizeof(__bthread_private));
 
-    thread->tid = *bthread;
+
     thread->arg = arg;
     thread->body = start_routine;
     thread->attr = *attr;
     thread->state = __BTHREAD_UNINITIALIZED;
 
-
-
-    tqueue_enqueue(&bthread_get_scheduler()->queue, thread);
+    thread->tid = tqueue_enqueue(&bthread_get_scheduler()->queue, thread);
 
     if(bthread_get_scheduler()->current_item == NULL){
         bthread_get_scheduler()->current_item = bthread_get_scheduler()->queue;

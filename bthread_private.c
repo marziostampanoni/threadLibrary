@@ -41,7 +41,7 @@ void bthread_create_cushion(__bthread_private *t_data) {
 
 int bthread_reap_if_zombie(bthread_t bthread, void **retval) {
     __bthread_scheduler_private *scheduler = bthread_get_scheduler();
-    __bthread_private *thread = tqueue_get_data(scheduler->current_item);
+    __bthread_private *thread = tqueue_get_data(tqueue_at_offset(scheduler->queue, bthread));
 
     if (thread->state != __BTHREAD_ZOMBIE) {
         return 0;

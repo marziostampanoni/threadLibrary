@@ -22,7 +22,7 @@ void* run(void* value){
     bthread_sleep(2000 + 1000* *i);
 
 
-    if(*i==1){
+    if(*i==10){
         bthread_printf("Io ezzere thread %d, io fatto figlio. Figlio dormire\n",*i);
         bthread_t newThread;
 
