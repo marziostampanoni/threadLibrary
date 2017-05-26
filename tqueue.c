@@ -16,7 +16,7 @@ unsigned long int tqueue_enqueue(TQueue* q, void* data){
     }
 
 
-    unsigned long int position = 0;
+    unsigned long int position = 1;
     TQueue* qStart = q;
 
 

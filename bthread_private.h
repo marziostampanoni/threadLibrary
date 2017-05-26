@@ -13,7 +13,7 @@
 
 typedef unsigned long int bthread_t;
 
-static int CUSHION_SIZE = 1000;
+static int CUSHION_SIZE = 64000;
 
 sigset_t sigsetNew;
 
@@ -55,7 +55,7 @@ static void bthread_cleanup();
 static void bthread_create_cushion(__bthread_private* t_data);
 int bthread_reap_if_zombie(bthread_t bthread, void ** retval);
 void bthread_initialize_next();
-static void bthread_setup_timer();
+void bthread_setup_timer();
 void bthread_block_timer_signal();
 void bthread_unblock_timer_signal();
 
