@@ -50,7 +50,6 @@ int bthread_join(bthread_t bthread, void **retval) {
         bthread_unblock_timer_signal();
         restore_context(tp->context);
     }
-
 }
 
 
