@@ -11,12 +11,36 @@
 #include <sys/time.h>
 #include "stdarg.h"
 
+void random_scheduling() {
+    // Faccio restituire lo scheduler
+    __bthread_scheduler_private* scheduler = bthread_get_scheduler();
+    //Estraggo la coda di thread
+    TQueue* thread_queue = scheduler->queue;
+    //Random scheduling
+    scheduler->current_item = tqueue_at_offset(&thread_queue, rand() % tqueue_size(&thread_queue));
+}
+
+void priority_scheduling() {
+    // Faccio restituire lo scheduler
+    __bthread_scheduler_private* scheduler = bthread_get_scheduler();
+    // Estraggo la coda di thread
+    TQueue* thread_queue = scheduler->queue;
+    if (((__bthread_private*)tqueue_get_data(scheduler->current_item))->credits == 0) {
+        scheduler->current_item = tqueue_at_offset(&thread_queue, rand() % tqueue_size(&thread_queue));
+        ((__bthread_private*)tqueue_get_data(scheduler->current_item))->credits = ((__bthread_private*)tqueue_get_data(scheduler->current_item))->priority;
+    } else {
+        //printf("Thread %d credits %d\n", scheduler->current_item->bthread->tid, scheduler->current_item->bthread->credits);
+        ((__bthread_private*)tqueue_get_data(scheduler->current_item))->credits--;
+    }
+}
 
 __bthread_scheduler_private *bthread_get_scheduler() {
     static __bthread_scheduler_private *scheduler_private = NULL;
     if (!scheduler_private) {
         scheduler_private = (__bthread_scheduler_private *) malloc(sizeof(__bthread_scheduler_private));
     }
+    //scheduler_private->scheduling_routine = random_scheduling;
+    //scheduler_private->scheduling_routine = priority_scheduling;
     return scheduler_private;
 }
 

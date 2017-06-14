@@ -4,7 +4,7 @@
 #ifndef THREADLIBRARY_BTHREAD_PRIVATE_H_H
 #define THREADLIBRARY_BTHREAD_PRIVATE_H_H
 
-#define QUANTUM_USEC 100000
+#define QUANTUM_USEC 10000
 
 
 
@@ -13,14 +13,19 @@
 
 typedef unsigned long int bthread_t;
 
-static int CUSHION_SIZE = 64000;
+static int CUSHION_SIZE = 10000;
 
 sigset_t sigsetNew;
+
+//Signature per prodecura di scheduling
+typedef void (*bthread_scheduling_routine)();
+
 
 typedef struct {
     TQueue queue;
     TQueue current_item;
     jmp_buf  context;
+    bthread_scheduling_routine scheduling_routine;
 } __bthread_scheduler_private;
 
 typedef struct {
@@ -44,11 +49,14 @@ typedef struct {
     void *retval;
     double wake_up_time;
     int cancel_req;
+    int priority;
+    int credits;
 }__bthread_private;
 
 
 
-
+void random_scheduling();
+void priority_scheduling();
 __bthread_scheduler_private* bthread_get_scheduler();
 
 static void bthread_cleanup();
