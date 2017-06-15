@@ -8,8 +8,6 @@
 #include <sys/time.h>
 #include "bthread_private.h"
 #include "bthread.h"
-#include <sys/time.h>
-#include "stdarg.h"
 
 
 __bthread_scheduler_private *bthread_get_scheduler() {

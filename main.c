@@ -8,17 +8,19 @@
 
 void* run(void* value){
     int* i;
+    long counter;
     i = (int*) value;
 
 
     bthread_printf("Io ezzere thread %d, io dorme %d zecondi\n",*i, 2+1* *i);
 
-    for (int x = 0; x < 1000; ++x) {
+    for (int x = 0; x < 1000000; ++x) {
         bthread_printf("Sono il thread %d\n", *i);
+        counter++;
     }
+    //bthread_sleep(100);
 
-    bthread_sleep(2000 + 1000* *i);
-    bthread_printf("Thread %d ezzere terminato ja\n",*i);
+    bthread_printf("Thread %d terminato, counter : %d \n",*i,counter);
 
 }
 

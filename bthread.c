@@ -79,7 +79,7 @@ void bthread_sleep(double ms) {
     __bthread_private *current_item = tqueue_get_data(scheduler->current_item);
 
     current_item->state = __BTHREAD_SLEEPING;
-    long now = get_current_time_millis();
+    long now = (long) get_current_time_millis();
     current_item->wake_up_time = now + ms;
 
     bthread_yield();
