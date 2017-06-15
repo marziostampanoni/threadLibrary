@@ -20,6 +20,8 @@ void bthread_exit(void *retval);
 
 void bthread_sleep(double ms);
 
+void set_priority(int priority);
+
 int bthread_cancel(bthread_t bthread);
 
 void bthread_testcancel(void);

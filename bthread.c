@@ -3,6 +3,9 @@
 #include <sys/time.h>
 #include <stdio.h>
 #include "bthread.h"
+#include "bthread_private.h"
+
+
 
 int bthread_create(bthread_t *bthread, const bthread_attr_t *attr,
                    void *(*start_routine)(void *), void *arg) {
