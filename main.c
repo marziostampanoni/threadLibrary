@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <unistd.h>
 #include "bthread.h"
+#include "bthread_test.h"
 
 #define N 3
 
@@ -29,7 +30,7 @@ bthread_t threads[N];
 
 int main(){
 
-
+/*
     int values[N];
     for(int i=0;i<N;i++){
         values[i] = i;
@@ -39,6 +40,10 @@ int main(){
     for(int i=0;i<N;i++){
         bthread_join(threads[i], NULL);
     }
+*/
+
+    thread_test();
+
 
 }
 
