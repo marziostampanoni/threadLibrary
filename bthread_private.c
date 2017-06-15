@@ -104,7 +104,6 @@ void bthread_initialize_next() {
     if (!initialized) {
 
         signal(SIGVTALRM, (void (*)()) bthread_yield);
-        sigaddset(&sigsetNew, SIGVTALRM);
         struct itimerval time;
         time.it_interval.tv_sec = 0;
         time.it_interval.tv_usec = QUANTUM_USEC;
@@ -116,8 +115,12 @@ void bthread_initialize_next() {
 }
 
 void bthread_block_timer_signal(){
-    sigprocmask(SIG_BLOCK, &sigsetNew, NULL);
+    sigset_t sigset_mask;
+    sigaddset(&sigset_mask, SIGVTALRM);
+    sigprocmask(SIG_BLOCK, &sigset_mask, NULL);
 }
 void bthread_unblock_timer_signal(){
-    sigprocmask(SIG_UNBLOCK, &sigsetNew, NULL);
+    sigset_t sigset_mask;
+    sigaddset(&sigset_mask, SIGVTALRM);
+    sigprocmask(SIG_UNBLOCK, &sigset_mask, NULL);
 }

@@ -15,7 +15,7 @@ typedef unsigned long int bthread_t;
 
 static int CUSHION_SIZE = 66000;
 
-sigset_t sigsetNew;
+
 
 //Signature per prodecura di scheduling
 typedef void (*bthread_scheduling_routine)();
