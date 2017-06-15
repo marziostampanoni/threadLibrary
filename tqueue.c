@@ -15,7 +15,6 @@ unsigned long int tqueue_enqueue(TQueue* q, void* data){
         return 1;
     }
 
-
     unsigned long int position = 1;
     TQueue* qStart = q;
 
@@ -78,10 +77,13 @@ unsigned long int tqueue_size(TQueue q){
 }
 
 TQueue tqueue_at_offset(TQueue q, unsigned long int offset) {
-    TQueueNode* result = NULL;
+    TQueue result = q;
 
-    for (int i = 0; i < offset % tqueue_size(q); ++i)
+    for (int i = 0; i < offset; ++i)
         result = q->next;
+
+
+
 
     return result;
 }

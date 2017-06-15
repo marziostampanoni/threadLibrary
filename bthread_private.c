@@ -9,27 +9,34 @@
 #include "bthread_private.h"
 #include "bthread.h"
 
-void random_scheduling() {
-    // Faccio restituire lo scheduler
+void sequential_scheduling(){
     __bthread_scheduler_private* scheduler = bthread_get_scheduler();
-    //Estraggo la coda di thread
-    TQueue* thread_queue = scheduler->queue;
-    //Random scheduling
-    scheduler->current_item = tqueue_at_offset(&thread_queue, rand() % tqueue_size(&thread_queue));
+
+    scheduler->current_item = tqueue_at_offset(scheduler->current_item, 1);
+}
+
+void random_scheduling() {
+    __bthread_scheduler_private* scheduler = bthread_get_scheduler();
+
+
+    scheduler->current_item = tqueue_at_offset(scheduler->current_item, rand() % tqueue_size(scheduler->current_item));
 }
 
 void priority_scheduling() {
-    // Faccio restituire lo scheduler
     __bthread_scheduler_private* scheduler = bthread_get_scheduler();
-    // Estraggo la coda di thread
-    TQueue* thread_queue = scheduler->queue;
-    if (((__bthread_private*)tqueue_get_data(scheduler->current_item))->credits == 0) {
-        scheduler->current_item = tqueue_at_offset(&thread_queue, rand() % tqueue_size(&thread_queue));
-        ((__bthread_private*)tqueue_get_data(scheduler->current_item))->credits = ((__bthread_private*)tqueue_get_data(scheduler->current_item))->priority;
+
+    __bthread_private *current_thread = (__bthread_private*)tqueue_get_data(scheduler->current_item);
+
+    if (current_thread->credits <= 0) {
+
+        current_thread->credits = current_thread->priority;
+
+        scheduler->current_item = tqueue_at_offset(scheduler->current_item, 1);
     } else {
-        //printf("Thread %d credits %d\n", scheduler->current_item->bthread->tid, scheduler->current_item->bthread->credits);
-        ((__bthread_private*)tqueue_get_data(scheduler->current_item))->credits--;
+        
+        current_thread->credits--;
     }
+
 }
 
 __bthread_scheduler_private *bthread_get_scheduler() {
@@ -38,6 +45,7 @@ __bthread_scheduler_private *bthread_get_scheduler() {
         scheduler_private = (__bthread_scheduler_private *) malloc(sizeof(__bthread_scheduler_private));
     }
     //scheduler_private->scheduling_routine = random_scheduling;
+    //scheduler_private->scheduling_routine = sequential_scheduling;
     scheduler_private->scheduling_routine = priority_scheduling;
     return scheduler_private;
 }
@@ -70,8 +78,8 @@ int bthread_reap_if_zombie(bthread_t bthread, void **retval) {
     if (thread->state == __BTHREAD_ZOMBIE && thread->tid == bthread){
 
         thread->state = __BTHREAD_EXITED;
-        if (thread->retval != NULL)
-            *retval = thread->retval;
+        //  if (thread->retval != NULL)
+        //     *retval = thread->retval;
 
         bthread_unblock_timer_signal();
         return 1;
@@ -116,11 +124,13 @@ void bthread_initialize_next() {
 
 void bthread_block_timer_signal(){
     sigset_t sigset_mask;
+    sigemptyset(&sigset_mask);
     sigaddset(&sigset_mask, SIGVTALRM);
     sigprocmask(SIG_BLOCK, &sigset_mask, NULL);
 }
 void bthread_unblock_timer_signal(){
     sigset_t sigset_mask;
+    sigemptyset(&sigset_mask);
     sigaddset(&sigset_mask, SIGVTALRM);
     sigprocmask(SIG_UNBLOCK, &sigset_mask, NULL);
 }

@@ -42,7 +42,7 @@ int bthread_join(bthread_t bthread, void **retval) {
         do {
             if (bthread_reap_if_zombie(bthread, retval)) return 0;
             bthread_block_timer_signal();
-            scheduler->current_item = tqueue_at_offset(scheduler->current_item, 1);
+            scheduler->scheduling_routine();
             tp = (__bthread_private *) tqueue_get_data(scheduler->current_item);
             if (tp->state == __BTHREAD_SLEEPING) {
                 if (tp->wake_up_time <= get_current_time_millis())
@@ -64,6 +64,7 @@ void bthread_exit(void *retval) {
     current_item->retval = retval;
     current_item->state = __BTHREAD_ZOMBIE;
     bthread_unblock_timer_signal();
+
     restore_context(scheduler->context);
 
 }
@@ -130,6 +131,8 @@ int bthread_cancel(bthread_t bthread) {
             bthread_unblock_timer_signal();
             return 0;
         }
+        else
+            current = current->next;
     }
     bthread_unblock_timer_signal();
     return 1;
