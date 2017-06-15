@@ -6,7 +6,8 @@
 #define __TSEMAPHORE_H__
 
 #include "tqueue.h"
-
+#include "bthread_private.h"
+#include "bthread.h"
 typedef struct {
 
     int value;

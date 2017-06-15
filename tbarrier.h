@@ -5,7 +5,8 @@
 #ifndef __TBARRIER_H__
 #define __TBARRIER_H__
 
-#include "tqueue.h"
+#include "bthread_private.h"
+#include "bthread.h"
 
 typedef struct {
 

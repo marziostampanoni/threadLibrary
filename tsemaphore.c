@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "tsemaphore.h"
-#include "bthread_private.h"
-#include "bthread.h"
 
 #define NULL 0
 

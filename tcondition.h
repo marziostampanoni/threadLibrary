@@ -7,6 +7,8 @@
 
 #include "tqueue.h"
 #include "tmutex.h"
+#include "bthread_private.h"
+#include "bthread.h"
 
 typedef struct {
 

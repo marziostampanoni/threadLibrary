@@ -78,7 +78,6 @@ unsigned long int tqueue_size(TQueue q){
 
 TQueue tqueue_at_offset(TQueue q, unsigned long int offset) {
     TQueue result = q;
-
     for (int i = 0; i < offset; ++i)
         result = q->next;
 

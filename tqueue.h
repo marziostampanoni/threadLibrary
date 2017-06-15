@@ -5,7 +5,7 @@
 #ifndef THREADLIBRARY_TQUEUE_H
 #define THREADLIBRARY_TQUEUE_H
 
-#endif //THREADLIBRARY_TQUEUE_H
+
 
 
 typedef struct TQueueNode {
@@ -33,3 +33,5 @@ TQueue tqueue_at_offset(TQueue q, unsigned long int offset);
 
 /* Returns the data on the first node of the given list */
 void* tqueue_get_data(TQueue q);
+
+#endif //THREADLIBRARY_TQUEUE_H

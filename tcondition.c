@@ -4,8 +4,6 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include "bthread_private.h"
-#include "bthread.h"
 #include "tcondition.h"
 
 #define NULL 0

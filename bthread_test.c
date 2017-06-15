@@ -39,7 +39,7 @@ void thread_routineB(void *arg) {
 }
 
 void thread_routineC(void *arg) {
-    set_priority(4);
+    set_priority(40);
     while(1) {
         bthread_testcancel();
         counterC++;
@@ -85,7 +85,7 @@ void thread_test() {
 
 
     printf("Priority scheduling\n");
-    printf("Priorities => A = 2; B = 1000; C = 4\n");
+    printf("Priorities => A = 2; B = 1000; C = 40\n");
 
     bthread_get_scheduler()->scheduling_routine = priority_scheduling;
 

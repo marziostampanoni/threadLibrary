@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "tbarrier.h"
-#include "bthread_private.h"
-#include "bthread.h"
 
 int bthread_barrier_init(bthread_barrier_t* b, const bthread_barrierattr_t* attr, unsigned count){
     if(b == NULL)
