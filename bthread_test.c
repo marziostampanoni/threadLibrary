@@ -12,6 +12,13 @@
 bthread_t tid0, tid1, tid2, tid3;
 long counterA, counterB, counterC;
 
+void thread_supervisor(void *arg) {
+    bthread_sleep(2000);
+    bthread_cancel(tid0);
+    bthread_cancel(tid1);
+    bthread_cancel(tid3);
+}
+
 //Test per preemption con priority scheduling
 void thread_routineA(void *arg) {
     set_priority(2);
@@ -21,13 +28,6 @@ void thread_routineA(void *arg) {
     }
 
     bthread_printf("Thread con id %d sta terminando\n", (long) arg);
-}
-
-void thread_supervisor(void *arg) {
-    bthread_sleep(2000);
-    bthread_cancel(tid0);
-    bthread_cancel(tid1);
-    bthread_cancel(tid3);
 }
 
 void thread_routineB(void *arg) {

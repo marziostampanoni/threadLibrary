@@ -3,7 +3,7 @@
 #include <sys/time.h>
 #include <stdio.h>
 #include "bthread.h"
-
+#include "bthread_private.h"
 
 
 int bthread_create(bthread_t *bthread, const bthread_attr_t *attr,
@@ -86,6 +86,17 @@ void bthread_sleep(double ms) {
 
     bthread_yield();
 
+}
+
+void set_priority(int priority) {
+    if(priority < 1) {
+        priority = 1;
+    }
+    //Estraggo lo scheduler
+    __bthread_scheduler_private* scheduler = bthread_get_scheduler();
+    //Dallo scheduler prendo la dimensione della lista
+    __bthread_private *current_item = tqueue_get_data(scheduler->current_item);
+    current_item->priority=priority;
 }
 
 void bthread_yield() {
