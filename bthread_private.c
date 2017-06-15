@@ -25,15 +25,17 @@ void random_scheduling() {
 void priority_scheduling() {
     __bthread_scheduler_private* scheduler = bthread_get_scheduler();
 
-    __bthread_private *current_thread = (__bthread_private*)tqueue_get_data(scheduler->current_item);
+    __bthread_private *current_thread = tqueue_get_data(scheduler->current_item);
+
 
     if (current_thread->credits <= 0) {
 
+        scheduler->current_item = tqueue_at_offset(scheduler->current_item, 1);
+
         current_thread->credits = current_thread->priority;
 
-        scheduler->current_item = tqueue_at_offset(scheduler->current_item, 1);
     } else {
-        
+
         current_thread->credits--;
     }
 
