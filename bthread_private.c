@@ -38,7 +38,7 @@ __bthread_scheduler_private *bthread_get_scheduler() {
         scheduler_private = (__bthread_scheduler_private *) malloc(sizeof(__bthread_scheduler_private));
     }
     //scheduler_private->scheduling_routine = random_scheduling;
-    //scheduler_private->scheduling_routine = priority_scheduling;
+    scheduler_private->scheduling_routine = priority_scheduling;
     return scheduler_private;
 }
 
