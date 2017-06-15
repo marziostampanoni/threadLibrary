@@ -13,7 +13,7 @@
 
 typedef unsigned long int bthread_t;
 
-static int CUSHION_SIZE = 64000;
+static int CUSHION_SIZE = 66000;
 
 sigset_t sigsetNew;
 

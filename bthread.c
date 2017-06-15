@@ -3,7 +3,6 @@
 #include <sys/time.h>
 #include <stdio.h>
 #include "bthread.h"
-#include "bthread_private.h"
 
 
 
