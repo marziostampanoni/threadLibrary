@@ -3,5 +3,5 @@ project(threadLibrary)
 
 set(CMAKE_C_STANDARD 11)
 
-set(SOURCE_FILES main.c tqueue.c tqueue.h bthread.h bthread_private.h bthread.c bthread_private.c bthread_test.c bthread_test.h bthread.c)
+set(SOURCE_FILES main.c tqueue.c tqueue.h bthread.h bthread_private.h bthread.c bthread_private.c bthread_test.c bthread_test.h bthread.c tmux.c tmutex.h)
 add_executable(threadLibrary ${SOURCE_FILES})
