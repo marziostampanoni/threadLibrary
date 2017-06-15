@@ -9,23 +9,21 @@
 
 #define NULL 0
 
-bthread_t tid0, tid1, tid2, tid3;
+bthread_t t0, t1, t2, t3;
 long counterA = 0, counterB = 0, counterC = 0;
 
 void thread_supervisor(void *arg) {
     set_priority(1);
     bthread_sleep(2000);
-    bthread_cancel(tid0);
-    bthread_cancel(tid1);
-    bthread_cancel(tid3);
+    bthread_cancel(t0);
+    bthread_cancel(t1);
+    bthread_cancel(t3);
 }
 
-//Test per preemption con priority scheduling
 void thread_routineA(void *arg) {
     set_priority(2);
-    for(;;) {
+    while(1) {
         bthread_testcancel();
-        //bthread_printf("dioA\n");
         counterA++;
     }
 
@@ -33,9 +31,8 @@ void thread_routineA(void *arg) {
 
 void thread_routineB(void *arg) {
     set_priority(1000);
-    for(;;) {
+    while(1) {
         bthread_testcancel();
-        //bthread_printf("dioB\n");
         counterB++;
     }
 
@@ -43,10 +40,8 @@ void thread_routineB(void *arg) {
 
 void thread_routineC(void *arg) {
     set_priority(4);
-
-    for(;;) {
+    while(1) {
         bthread_testcancel();
-        //bthread_printf("dioC\n");
         counterC++;
     }
 
@@ -54,34 +49,56 @@ void thread_routineC(void *arg) {
 
 
 void thread_test() {
-    /* Creazione di piu' thread */
-    bthread_create(&tid0, NULL, thread_routineA, (void*) 0);
-    bthread_create(&tid1, NULL, thread_routineB, (void*) 1);
-    bthread_create(&tid3, NULL, thread_routineC, (void*) 3);
-    bthread_create(&tid2, NULL, thread_supervisor, (void*) 2);
-
-    bthread_join(tid1, NULL);
-    bthread_join(tid3, NULL);
-    bthread_join(tid0, NULL);
-    bthread_join(tid2, NULL);
-
-    /* Stampa per controllo funzionamento priority scheduling */
-    printf("counterA=%d, counterB=%d, counterC=%d\n", counterA, counterB, counterC);
+    printf("Sequential scheduling\n");
 
 
+    bthread_get_scheduler()->scheduling_routine = sequential_scheduling;
 
-    /* Creazione di piu' thread */
-    bthread_create(&tid0, NULL, thread_routineA, (void*) 0);
-    bthread_create(&tid1, NULL, thread_routineB, (void*) 1);
-    bthread_create(&tid3, NULL, thread_routineC, (void*) 3);
-    bthread_create(&tid2, NULL, thread_supervisor, (void*) 2);
+    bthread_create(&t0, NULL, thread_routineA, (void*) 0);
+    bthread_create(&t1, NULL, thread_routineB, (void*) 1);
+    bthread_create(&t3, NULL, thread_routineC, (void*) 3);
+    bthread_create(&t2, NULL, thread_supervisor, (void*) 2);
 
-    bthread_join(tid1, NULL);
-    bthread_join(tid3, NULL);
-    bthread_join(tid0, NULL);
-    bthread_join(tid2, NULL);
+    bthread_join(t1, NULL);
+    bthread_join(t3, NULL);
+    bthread_join(t0, NULL);
+    bthread_join(t2, NULL);
 
-    /* Stampa per controllo funzionamento priority scheduling */
-    printf("counterA=%d, counterB=%d, counterC=%d\n", counterA, counterB, counterC);
+    printf("counterA=%d, counterB=%d, counterC=%d\n\n\n", counterA, counterB, counterC);
+
+
+    printf("Random scheduling\n");
+
+    bthread_get_scheduler()->scheduling_routine = random_scheduling;
+
+    bthread_create(&t0, NULL, thread_routineA, (void*) 0);
+    bthread_create(&t1, NULL, thread_routineB, (void*) 1);
+    bthread_create(&t3, NULL, thread_routineC, (void*) 3);
+    bthread_create(&t2, NULL, thread_supervisor, (void*) 2);
+
+    bthread_join(t1, NULL);
+    bthread_join(t3, NULL);
+    bthread_join(t0, NULL);
+    bthread_join(t2, NULL);
+
+    printf("counterA=%d, counterB=%d, counterC=%d\n\n\n", counterA, counterB, counterC);
+
+
+    printf("Priority scheduling\n");
+    printf("Priorities => A = 2; B = 1000; C = 4\n");
+
+    bthread_get_scheduler()->scheduling_routine = priority_scheduling;
+
+    bthread_create(&t0, NULL, thread_routineA, (void*) 0);
+    bthread_create(&t1, NULL, thread_routineB, (void*) 1);
+    bthread_create(&t3, NULL, thread_routineC, (void*) 3);
+    bthread_create(&t2, NULL, thread_supervisor, (void*) 2);
+
+    bthread_join(t1, NULL);
+    bthread_join(t3, NULL);
+    bthread_join(t0, NULL);
+    bthread_join(t2, NULL);
+
+    printf("counterA=%d, counterB=%d, counterC=%d\n\n\n", counterA, counterB, counterC);
 
 }

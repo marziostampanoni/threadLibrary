@@ -57,6 +57,7 @@ typedef struct {
 
 void random_scheduling();
 void priority_scheduling();
+void sequential_scheduling();
 __bthread_scheduler_private* bthread_get_scheduler();
 
 static void bthread_cleanup();
